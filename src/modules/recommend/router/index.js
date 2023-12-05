@@ -3,7 +3,7 @@ export const route = {
   component: 'Recommend',
   meta: {
     title: '推荐图书',
-    icon: 'education'
+    icon: 'star'
   },
   children: [
     {

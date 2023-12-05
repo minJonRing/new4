@@ -2,7 +2,7 @@ export const roles = [
     {
         component: 'User',
         meta: {
-            title: '用户管理', icon: 'dashboard',
+            title: '用户管理', icon: 'peoples',
         },
         children: [
             {
@@ -20,7 +20,7 @@ export const roles = [
     {
         component: 'Book',
         meta: {
-            title: '内容管理', icon: 'dashboard',
+            title: '内容管理', icon: 'education',
         },
         children: [
             {
@@ -46,7 +46,7 @@ export const roles = [
     {
         component: 'Recommend',
         meta: {
-            title: '推荐管理', icon: 'dashboard',
+            title: '推荐管理', icon: 'star',
         },
         children: [
             {
