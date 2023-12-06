@@ -18,12 +18,17 @@ import {
 // 字典集合
 export const store = {
   // 地区
-  demo: {
+  bookType: {
     initValue: [],
     option: {
-      url: '/demo',
+      url: '/bookType',
+      base: '',
+      json: 'bookTypeJson'
     },
   },
+  bookTypeJson: {
+    key: 'get'
+  }
 }
 
 // state getters

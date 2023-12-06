@@ -1,7 +1,8 @@
 <template>
   <div class="box">
     <ListProT ref="list" :list="list" :mixinConfig="mixinConfig" :searchParam="searchParam" :tableParam="tableParam"
-      :noBtns="noBtns" :otherBtns="otherBtns" :selection="selection" @getData="getData" />
+      :noBtns="noBtns" :otherBtns="otherBtns" :selection="selection" :searchFilter="searchFilter"
+      :layoutOption="layoutOption" :btnOption="btnOption" :conditionBtn="conditionBtn" @getData="getData" />
   </div>
 </template>
 
@@ -14,13 +15,18 @@ export default {
     noBtns: rulesT.Array,
     otherBtns: rulesT.Array,
     selection: rulesT.Array,
+    layoutOption: rulesT.Object,
+    btnOption: rulesT.Object,
+    conditionBtn: rulesT.Object,
   },
   data() {
     return {
       mixinConfig: {
         url: "/books",
       },
-      list: {},
+      list: {
+        bookType: []
+      },
       // 查询条件
       searchParam: [],
       // 表格表头、数据显示
@@ -28,9 +34,17 @@ export default {
     };
   },
   computed: {
-    ...mapGetters([]),
+    ...mapGetters(['bookType', 'bookTypeJson'])
+  },
+  watch: {
+    bookType(data) {
+      this.list.bookType = data;
+    }
   },
   created() {
+    this.list = {
+      bookType: this.bookType
+    }
     this.init();
   },
   methods: {
@@ -40,15 +54,16 @@ export default {
           label: "类型",
           type: "select",
           option: {
-            prop: "nickName",
+            prop: "docType",
             initValue: "",
+            listName: 'bookType'
           },
         },
         {
           label: "题名",
           type: "input",
           option: {
-            prop: "nickName",
+            prop: "title",
             initValue: "",
           },
         },
@@ -56,7 +71,7 @@ export default {
           label: "关键字",
           type: "input",
           option: {
-            prop: "nickName",
+            prop: "keyWords",
             initValue: "",
           },
         },
@@ -64,7 +79,7 @@ export default {
           label: "责任者",
           type: "input",
           option: {
-            prop: "nickName",
+            prop: "responsible",
             initValue: "",
           },
         },
@@ -72,7 +87,7 @@ export default {
           label: "出版者",
           type: "input",
           option: {
-            prop: "nickName",
+            prop: "publisher",
             initValue: "",
           },
         },
@@ -80,7 +95,7 @@ export default {
           label: "出版地",
           type: "input",
           option: {
-            prop: "nickName",
+            prop: "place",
             initValue: "",
           },
         },
@@ -97,20 +112,24 @@ export default {
           },
           width: 111
         },
-        { label: "题名", prop: "title", 'show-overflow-tooltip': true, 'min-width': 200 },
-        { label: "类型", prop: "docType" },
+        { label: "题名", prop: "title", 'show-overflow-tooltip': true, 'min-width': 100 },
+        {
+          label: "类型", formatter: (row) => {
+            return this.bookTypeJson[row.docType]
+          }
+        },
         { label: "第一责任者", prop: "firstResponsible" },
         { label: "出版者", prop: "publisher" },
         { label: "出版地", prop: "place" },
         {
           label: "出版时间", prop: "publishTime", formatter: (row) => {
-            return row.publishTime.replace(/(?=T)|(?=\s).+/g, '').replace(/\-/g, ($1, i) => {
+            return row.publishTime ? row.publishTime.replace(/(?=T)|(?=\s).+/g, '').replace(/\-/g, ($1, i) => {
               if (i == 4) {
                 return '年'
               } else if (i == 7) {
                 return '月'
               }
-            }) + '日'
+            }) + '日' : '--'
           },
           width: 115
         },
@@ -119,6 +138,14 @@ export default {
     getData(data) {
       this.$emit("getData", data);
     },
+    searchFilter(data) {
+      const { responsible, pageNum } = data
+      return {
+        firstResponsible: responsible,
+        secondResponsible: responsible,
+        current: pageNum
+      }
+    }
   },
 };
 </script>

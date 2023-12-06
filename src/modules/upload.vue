@@ -143,6 +143,8 @@ export default {
 			display: block;
 			width: 100%;
 			height: 100%;
+			object-fit: cover;
+			image-rendering: auto;
 			border-radius: 4px;
 		}
 

@@ -1,4 +1,5 @@
 // 所有vuex里的数据
+import { getters as GlobalGetter } from './global/index'
 const getters = {
   // 系统设置
   loading: state => state.app.loading,
@@ -11,6 +12,8 @@ const getters = {
   menuSearch: state => state.settings.menuSearch,
   resize: state => state.settings.resize,
   errorBtn: state => state.settings.errorBtn,
+  // global
+  ...GlobalGetter,
   // 用户信息
   token: state => state.user.token,
   avatar: state => state.user.avatar,
@@ -20,6 +23,6 @@ const getters = {
   permission_routes: state => state.permission.routes,
   errorLogs: state => state.errorLog.logs,
   // more
-  goods: state => state.cart.goods
+  goods: state => state.cart.goods,
 }
 export default getters

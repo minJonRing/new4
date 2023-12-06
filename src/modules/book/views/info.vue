@@ -5,18 +5,17 @@
         <div class="base scroll">
           <el-form :model="form" ref="form" :rules="rules" label-width="140px" label-position="left">
             <el-form-item label="文档封面">
-              <Upload v-model="form.imageUrl" url="/upload" />
+              <Upload v-model="form.imageUrl" url="/upload" height="150px" />
             </el-form-item>
             <FormProT :form="form" :list="list" :form-list="formList" />
             <el-form-item>
               <el-button type="primary" @click="handleSubmit">保存</el-button>
               <btn-return />
             </el-form-item>
-
           </el-form>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="目录信息">目录信息</el-tab-pane>
+      <el-tab-pane v-if="form.id" label="目录信息">目录信息</el-tab-pane>
     </el-tabs>
 
   </div>
@@ -33,6 +32,7 @@ import {
 } from "tqr";
 import Upload from '@/modules/upload.vue'
 import { ajax } from "@/api/ajax"
+import { mapGetters } from 'vuex';
 
 export default {
   name: "Info",
@@ -49,7 +49,7 @@ export default {
         url: "/books",
       },
       list: {
-        roleList: []
+        bookType: []
       },
       form: {
         id: null,
@@ -99,6 +99,14 @@ export default {
       },
     };
   },
+  computed: {
+    ...mapGetters(['bookType'])
+  },
+  watch: {
+    bookType(data) {
+      this.list.bookType = data;
+    }
+  },
   created() {
     const { id } = this.$route.query;
     if (id) {
@@ -110,9 +118,9 @@ export default {
     } else {
       this.init()
     }
-    setTimeout(() => {
-      this.form.id = 22
-    }, 3000);
+    this.list = {
+      bookType: this.bookType
+    }
   },
   methods: {
     init() {
@@ -144,6 +152,7 @@ export default {
                 prop: "docType",
                 isRead,
                 initValue: "",
+                listName: 'bookType'
               },
             },
           ],
@@ -163,12 +172,12 @@ export default {
                 prop: "keyWords",
                 isRead,
                 initValue: "",
-                placeholder: '多个关键字请用英文分号";"分隔',
+                placeholder: '多个关键字请用中英文分号[，][,]分隔',
               },
             },
             {
               label: "文档语言",
-              type: "select",
+              type: "input",
               itemOption: {
                 class: 'flex-g1'
               },
@@ -384,7 +393,7 @@ export default {
       this.$refs.form.validate((valid) => {
         if (valid) {
           const { keyWords = '' } = this.form
-          const data = { ...this.form, keyWords: keyWords.split(',') };
+          const data = { ...this.form, keyWords: keyWords.replace(/\,|\，/g, ',').split(',') };
           this.submit(data);
         } else {
           this.$notify.warning("必填项未填写完整，请检查！");
@@ -400,7 +409,7 @@ export default {
 .info {
   display: flex;
   height: 100%;
-  min-width: 1080px;
+  min-width: 960px;
 
   .el-tabs {
     background-color: #fff;

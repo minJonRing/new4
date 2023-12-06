@@ -1,7 +1,7 @@
 <template>
   <div class="box">
     <el-form :model="form" ref="form" inline>
-      <el-form-item label="题名">
+      <!-- <el-form-item label="题名">
         <el-input v-model="form.title" placeholder="请输入题名" clearable />
       </el-form-item>
       <el-form-item label="类型">
@@ -18,35 +18,36 @@
       </el-form-item>
       <el-form-item label="出版地">
         <el-input v-model="form.place" placeholder="请输入" clearable />
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="handleSearch">查询</el-button>
+      </el-form-item> -->
+      <!-- <el-form-item>
+        <el-button type="primary" @click="handleSearch">刷新</el-button>
         <el-button @click="handleRe">重置</el-button>
-      </el-form-item>
+      </el-form-item> -->
     </el-form>
     <div class="handle">
       <el-button type="success" @click="handleAdd">添加推荐图书</el-button>
+      <el-button type="primary" @click="handleSearch">刷新</el-button>
     </div>
+    <el-divider></el-divider>
     <div class="body">
       <transition-group tag="div" class="container">
         <div class="item" v-for="item in list" :key="item.id" draggable="true" @dragstart="handleDragStart($event, item)"
           @dragover.prevent="handleDragOver($event, item)" @dragenter="handleDragEnter($event, item)"
           @dragend="handleDragEnd($event, item)">
-          <Card class="item"
-            data-image="https://images.unsplash.com/photo-1479644025832-60dabb8be2a1?dpr=2&auto=compress,format&fit=crop&w=1199&h=799&q=80&cs=tinysrgb&crop="
-            :title="item.color" :item="item" @delete="handleCancel">
+          <Card class="item" :data-image="item.imageUrl" :title="item.title" :item="item" @delete="handleCancel">
           </Card>
         </div>
       </transition-group>
     </div>
-
+    <el-divider></el-divider>
     <div class="submit">
       <el-button v-if="isUpload" type="primary" @click="handleSort">更新排序</el-button>
     </div>
 
     <!--  -->
-    <el-dialog title="图书列表" :visible.sync="add" width="1200px">
-      <BookList :noBtns="['add', 'edit', 'delete', 'see']" :otherBtns="['select']" @getData="getData" />
+    <el-dialog title="图书列表" :visible.sync="add" width="960px">
+      <BookList :noBtns="['add', 'edit', 'delete', 'see']" :otherBtns="['select']" @getData="getData"
+        :layoutOption="layoutOption" :btnOption="btnOption" :conditionBtn="conditionBtn" />
       <span slot=" footer">
         <el-button @click="add = false">取消</el-button>
       </span>
@@ -73,19 +74,27 @@ export default {
       form: {},
       initForm: {},
       // dragging
-      list: [
-        { id: 1, color: '#1111111' },
-        { id: 2, color: '#2222222' },
-        { id: 3, color: '#3333333' },
-        { id: 4, color: '#4444444' },
-        { id: 5, color: '#5555555' },
-        { id: 6, color: '#6666666' },
-      ],
+      list: [],
       initList: [],
       ending: null,
       dragging: null,
       // 
-      add: false
+      add: false,
+      layoutOption: {
+        table: {
+          height: '400px'
+        }
+      },
+      btnOption: {
+        select: {
+          name: '设为推荐'
+        }
+      },
+      conditionBtn: {
+        select: ({ row: { id } }) => {
+          return !this.list.map(({ id }) => id).includes(id)
+        }
+      }
     };
   },
   computed: {
@@ -113,7 +122,8 @@ export default {
       ajax({
         url: "/books/recommend"
       }).then(({ data }) => {
-        const { list } = data
+        const { list } = data;
+        this.list = list;
       }).finally(() => {
         this.$global.loading = false
       })
@@ -162,7 +172,7 @@ export default {
         url: `/books/sortRecommend`,
         method: 'put',
         data: {
-          ids: []
+          ids: this.list.map(({ id }) => id)
         }
       }).then(() => {
         this.$notify.success('取消推荐成功');

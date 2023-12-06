@@ -27,10 +27,12 @@ export const getZd = (state, attr, option = {}) => {
     }).then(({
       data
     }) => {
-      if (isArray(data) && data.length) {
-        const list = fnArrFlat(data, _option)
-        state[zdName][attr] = list
-        json ? state[zdName][json] = fnArrToJson(list) : {}
+      const { list } = data;
+
+      if (isArray(list) && list.length) {
+        const _list = fnArrFlat(list, _option)
+        state[zdName][attr] = _list;
+        json ? state[zdName][json] = fnArrToJson(_list) : {}
       } else {
         const list = [{
           value: null,

@@ -46,7 +46,7 @@ export default {
     },
     methods: {
         handleDelete() {
-            this.$emit('delete', item.id)
+            this.$emit('delete', this.item.id)
         }
     }
 }
@@ -119,6 +119,9 @@ $returnEasing: cubic-bezier(0.445, 0.05, 0.55, 0.95);
                 height: 100%;
                 padding: 12px 6px;
                 font-size: 16px;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
                 transition-duration: 300ms;
             }
 
@@ -128,10 +131,10 @@ $returnEasing: cubic-bezier(0.445, 0.05, 0.55, 0.95);
     &:hover {
         .card {
             background-color: rgba(0, 0, 0, 0);
-            box-shadow:
-                rgba(black, 0) 0 0 10px 0,
-                inset rgba(0, 0, 0, .3) 0 0 0 5px,
-                inset white 0 0 0px 6px;
+            // box-shadow:
+            //     rgba(black, 0) 0 0 10px 0,
+            //     inset rgba(0, 0, 0, .3) 0 0 0 5px,
+            //     inset white 0 0 0px 6px;
 
             .card-info {
                 background-color: transparent;
@@ -142,9 +145,13 @@ $returnEasing: cubic-bezier(0.445, 0.05, 0.55, 0.95);
                 }
 
                 .title {
-                    background-color: rgba(255, 255, 255, .3);
+                    background-color: rgba(255, 255, 255, 0);
                     backdrop-filter: blur(6px);
-                    color: #111;
+                    color: #000;
+                    overflow: auto;
+                    white-space: wrap;
+                    top: 50%;
+                    box-shadow: 0 -4rem 6rem rgba(0, 0, 0, .3);
                 }
             }
 
