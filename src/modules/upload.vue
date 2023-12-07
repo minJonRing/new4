@@ -3,8 +3,8 @@
 		<el-upload :show-file-list="false" v-loading="loading" :element-loading-text="progress + '%'"
 			class="e-avatar-uploader" action="#" :before-upload="beforeAvatarUpload"
 			:http-request="handleUploadLearnSignVoucherFileChange" :attr-icon="'注:只能上传' + type.join()"
-			:style="{ width, height }">
-			<img v-if="image" :src="image" class="image">
+			:style="{ width: cwidth, height }">
+			<img ref="img" v-if="image" :src="image" @load="handleLoad" class="image">
 			<i v-else class="el-icon el-icon-upload2" />
 		</el-upload>
 	</div>
@@ -48,6 +48,10 @@ export default {
 			type: String,
 			default: "100px",
 		},
+		auto: {
+			type: Boolean,
+			default: false
+		}
 	},
 	// v-model 双向绑定
 	model: {
@@ -58,6 +62,7 @@ export default {
 		return {
 			loading: false,
 			progress: 0,
+			cwidth: this.width
 		};
 	},
 	computed: {
@@ -124,6 +129,17 @@ export default {
 		handleDelete(item, i) {
 			this.image = ''
 		},
+		handleLoad(e) {
+			const img = new Image()
+			img.src = this.image
+			img.onload = (e) => {
+				const { width, height } = img;
+				const _w = width / height * +this.height.replace(/(px)/g, '');
+				if (this.auto) {
+					this.cwidth = _w + 'px'
+				}
+			}
+		}
 	},
 };
 </script>
@@ -138,6 +154,7 @@ export default {
 	.e-avatar-uploader {
 		position: relative;
 		margin: 3px 6px 3px 0;
+		transition-duration: 600ms;
 
 		.image {
 			display: block;
@@ -146,11 +163,13 @@ export default {
 			object-fit: cover;
 			image-rendering: auto;
 			border-radius: 4px;
+			border: 1px dashed #666;
 		}
 
 		::v-deep .el-upload {
 			display: block;
 			width: 100%;
+
 			height: 100%;
 			box-sizing: border-box;
 
@@ -158,7 +177,7 @@ export default {
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				border: 1px dashed #d9d9d9;
+				border: 1px dashed #666;
 				border-radius: 6px;
 				box-sizing: border-box;
 				cursor: pointer;

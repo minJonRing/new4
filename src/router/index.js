@@ -10,20 +10,23 @@ import Layout from '@/layout'
 import { route as UserRoute, component as UserComponent } from '@/modules/user/router'
 import { route as BookRoute, component as BookComponent } from '@/modules/book/router'
 import { route as RecommendRoute, component as RecommendComponent } from '@/modules/recommend/router'
+import { route as SetRoute, component as SetComponent } from '@/modules/set/router'
 
 
 // 本地路由数据信息
 export const routeAll = [
   UserRoute,
   BookRoute,
-  RecommendRoute
+  RecommendRoute,
+  SetRoute
 ]
 
 // 路由数据对应信息
 export const devComponent = {
   ...UserComponent,
   ...BookComponent,
-  ...RecommendComponent
+  ...RecommendComponent,
+  ...SetComponent
 }
 
 /**

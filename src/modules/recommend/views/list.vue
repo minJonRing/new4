@@ -114,7 +114,7 @@ export default {
   created() {
     this.handleSearch()
     this.initForm = { ...this.form };
-    this.initList = [...this.list]
+
   },
   methods: {
     handleSearch() {
@@ -124,6 +124,7 @@ export default {
       }).then(({ data }) => {
         const { list } = data;
         this.list = list;
+        this.initList = [...list]
       }).finally(() => {
         this.$global.loading = false
       })
@@ -132,23 +133,35 @@ export default {
       this.form = { ...this.initForm }
     },
     handleAdd() {
-      this.add = true
+      const len = this.list.length;
+      if (len < 10) {
+        this.add = true;
+      } else {
+        this.$notify.warning('最多10个推荐位,请先删除后再进行添加。')
+      }
+
     },
     // 设为推荐
     getData(data) {
-      const { id } = data[0] || {};
-      if (id) {
-        this.$global.loading = true;
-        ajax({
-          url: `/books/setRecommend/${id}`,
-          method: 'put'
-        }).then(() => {
-          this.$notify.success('设置推荐成功');
-          this.handleSearch()
-        }).finally(() => {
-          this.$global.loading = false;
-        })
+      const len = this.list.length;
+      if (len < 10) {
+        const { id } = data[0] || {};
+        if (id) {
+          this.$global.loading = true;
+          ajax({
+            url: `/books/setRecommend/${id}`,
+            method: 'put'
+          }).then(() => {
+            this.$notify.success('设置推荐成功');
+            this.handleSearch()
+          }).finally(() => {
+            this.$global.loading = false;
+          })
+        }
+      } else {
+        this.$notify.warning('最多10个推荐位,请先删除后再进行添加。')
       }
+
     },
     // 取消推荐
     handleCancel(id) {
@@ -175,7 +188,7 @@ export default {
           ids: this.list.map(({ id }) => id)
         }
       }).then(() => {
-        this.$notify.success('取消推荐成功');
+        this.$notify.success('更新排序成功');
         this.handleSearch()
       }).finally(() => {
         this.$global.loading = false;

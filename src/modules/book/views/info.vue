@@ -72,7 +72,7 @@ export default {
         publishEvolution: "",
         publishName: "",
         version: "",
-        redFlag: 0,
+        redFlag: false,
         notes: "",
         seriesName: "",
         seriesSubName: "",
@@ -381,7 +381,7 @@ export default {
               option: {
                 prop: "redFlag",
                 isRead,
-                initValue: "",
+                initValue: false,
               },
             },
           ]

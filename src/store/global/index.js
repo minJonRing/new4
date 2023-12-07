@@ -21,13 +21,13 @@ export const store = {
   bookType: {
     initValue: [],
     option: {
-      url: '/bookType',
+      url: '/api/bookType',
       base: '',
       json: 'bookTypeJson'
     },
   },
   bookTypeJson: {
-    key: 'get'
+    type: 'get'
   }
 }
 

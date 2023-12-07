@@ -69,7 +69,7 @@ $returnEasing: cubic-bezier(0.445, 0.05, 0.55, 0.95);
         height: 210px;
         background-color: #333;
         overflow: hidden;
-        border-radius: 14px;
+        border-radius: 4px;
         box-shadow:
             rgba(black, 0.66) 0 2px 10px 0,
             inset #333 0 0 0 5px,
@@ -108,7 +108,16 @@ $returnEasing: cubic-bezier(0.445, 0.05, 0.55, 0.95);
                 top: 0;
                 right: 0;
                 opacity: 0;
+                z-index: 9;
                 transition-duration: 300ms;
+
+                ::v-deep {
+                    .el-popover__reference-wrapper {
+                        .el-icon-delete {
+                            font-size: 20px;
+                        }
+                    }
+                }
             }
 
             .title {
@@ -145,12 +154,12 @@ $returnEasing: cubic-bezier(0.445, 0.05, 0.55, 0.95);
                 }
 
                 .title {
-                    background-color: rgba(255, 255, 255, 0);
+                    background-color: rgba(255, 255, 255, .1);
                     backdrop-filter: blur(6px);
                     color: #000;
                     overflow: auto;
                     white-space: wrap;
-                    top: 50%;
+                    top: 30%;
                     box-shadow: 0 -4rem 6rem rgba(0, 0, 0, .3);
                 }
             }

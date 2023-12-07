@@ -133,6 +133,11 @@ export default {
           },
           width: 115
         },
+        {
+          label: "更新时间", prop: "updateTime", formatter: (row) => {
+            return row.updateTime ? row.updateTime.replace(/(?=T)|(?=\s).+/g, '') : ''
+          },
+        },
       ];
     },
     getData(data) {

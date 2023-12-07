@@ -16,7 +16,7 @@ const name = defaultSettings.title
 const port = process.env.port || process.env.npm_config_port || 9527 // dev port
 
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
-const dir = `dist-${Date.now()}-${process.env.NODE_ENV}`
+const dir = `admin-${Date.now()}-${process.env.NODE_ENV}`
 module.exports = {
   /**
    * You will need to set publicPath if you plan to deploy your site under a sub path,

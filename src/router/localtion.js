@@ -57,4 +57,30 @@ export const roles = [
             },
         ]
     },
+    {
+        component: 'Set',
+        meta: {
+            title: '基础设置', icon: 'lock',
+        },
+        children: [
+            {
+                component: 'SetLogo',
+                meta: {
+                    title: 'Logo设置'
+                },
+            },
+            {
+                component: 'SetCode',
+                meta: {
+                    title: '二维码设置'
+                },
+            },
+            {
+                component: 'SetLink',
+                meta: {
+                    title: '相关链接'
+                },
+            },
+        ]
+    },
 ]

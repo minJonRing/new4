@@ -21,7 +21,7 @@ const state = {
   // 调整尺寸大小
   resize,
   // 错误日志
-  errorBtn
+  errorBtn,
 }
 
 const mutations = {
