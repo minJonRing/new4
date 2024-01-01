@@ -15,7 +15,9 @@
           </el-form>
         </div>
       </el-tab-pane>
-      <el-tab-pane v-if="form.id" label="目录信息">目录信息</el-tab-pane>
+      <el-tab-pane v-if="form.id" label="目录信息">
+        <Menu :book="form" />
+      </el-tab-pane>
     </el-tabs>
 
   </div>
@@ -23,6 +25,7 @@
 
 <script>
 import infoMixin from "@/mixin/infoMixin";
+import Menu from './menu'
 import {
   rulesT,
   blur,
@@ -42,6 +45,7 @@ export default {
   },
   components: {
     Upload,
+    Menu
   },
   data() {
     return {
@@ -86,6 +90,8 @@ export default {
         remarks: "",
         roundup: "",
         url: "",
+        // 
+        aaa: ['2023-12-01', '2023-12-10'],
       },
       formList: [],
       rules: {
@@ -365,7 +371,7 @@ export default {
         },
         {
           type: "box",
-          className: "flex-box flex  flex-wrap",
+          // className: "flex-box flex  flex-wrap",
           option: {
             render: () => {
               return <el-tag>其他信息</el-tag>
@@ -384,6 +390,24 @@ export default {
                 initValue: false,
               },
             },
+            {
+              label: "起讫时间",
+              type: "date",
+              itemOption: {
+                class: 'flex-g1'
+              },
+              option: {
+                type: 'daterange',
+                prop: 'aaa',
+                isRead,
+                initValue: '',
+                'start-placeholder': "开始日期",
+                'end-placeholder': "结束日期",
+                'range-separator': '至',
+                format: 'yyyy-MM-dd',
+                editable: false
+              },
+            },
           ]
         }
       ];
@@ -394,6 +418,8 @@ export default {
         if (valid) {
           const { keyWords = '' } = this.form
           const data = { ...this.form, keyWords: keyWords.replace(/\,|\，/g, ',').split(',') };
+          console.log(data)
+          return
           this.submit(data);
         } else {
           this.$notify.warning("必填项未填写完整，请检查！");

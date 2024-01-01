@@ -18,6 +18,32 @@ export const roles = [
         ]
     },
     {
+        component: 'TopicLibrary',
+        meta: {
+            title: '专题库管理', icon: 'list',
+        },
+        children: [
+            {
+                component: 'TopicLibraryList',
+                meta: {
+                    title: '专题库管理'
+                },
+            },
+            {
+                component: 'TopicLibraryAdd',
+                hidden: true
+            },
+            {
+                component: 'TopicLibraryEdit',
+                hidden: true
+            },
+            {
+                component: 'TopicLibrarySee',
+                hidden: true
+            }
+        ]
+    },
+    {
         component: 'Book',
         meta: {
             title: '内容管理', icon: 'education',

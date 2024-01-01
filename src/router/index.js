@@ -9,6 +9,7 @@ import Layout from '@/layout'
 
 import { route as UserRoute, component as UserComponent } from '@/modules/user/router'
 import { route as BookRoute, component as BookComponent } from '@/modules/book/router'
+import { route as topicLibraryRoute, component as topicLibraryComponent } from '@/modules/topicLibrary/router'
 import { route as RecommendRoute, component as RecommendComponent } from '@/modules/recommend/router'
 import { route as SetRoute, component as SetComponent } from '@/modules/set/router'
 
@@ -17,6 +18,7 @@ import { route as SetRoute, component as SetComponent } from '@/modules/set/rout
 export const routeAll = [
   UserRoute,
   BookRoute,
+  topicLibraryRoute,
   RecommendRoute,
   SetRoute
 ]
@@ -25,6 +27,7 @@ export const routeAll = [
 export const devComponent = {
   ...UserComponent,
   ...BookComponent,
+  ...topicLibraryComponent,
   ...RecommendComponent,
   ...SetComponent
 }
