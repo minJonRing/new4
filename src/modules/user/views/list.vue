@@ -51,7 +51,7 @@ export default {
           label: "账号",
           type: "input",
           option: {
-            prop: "nickName",
+            prop: "username",
             initValue: "",
           },
         },
@@ -59,11 +59,11 @@ export default {
       this.tableParam = [
         { label: "昵称", prop: "nickName" },
         { label: "账号", prop: "username" },
-        { label: "用户等级", prop: "username" },
-        { label: "当前积分", prop: "username" },
-        { label: "邮箱", prop: "phone" },
+        // { label: "用户等级", prop: "username" },
+        // { label: "当前积分", prop: "username" },
+        { label: "邮箱", prop: "email" },
         { label: "手机号", prop: "phone" },
-        { label: "状态", prop: "phone" },
+        // { label: "状态", prop: "phone" },
         {
           label: "创建时间", formatter: (row) => {
             return row.createTime.split('T')[0]

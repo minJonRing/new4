@@ -4,15 +4,18 @@
             <el-button type="primary" @click="handleAdd">添加目录</el-button>
             <el-button @click="handleBack">返回列表</el-button>
             <div class="d"></div>
-            <el-tree :data="menu" @node-click="handleNodeClick">
+            <el-tree :data="menu" @node-click="handleNodeClick" :default-expanded-keys="expandedKeys">
                 <span class="custom-tree-node" slot-scope="{ node, data }">
                     <span class="label">{{ node.label }}</span>
                     <span class="btns">
+                        <el-button v-if="!node.isLeaf" type="text" icon="el-icon-edit-outline" size="mini"
+                            style="color:#ef9600" @click.stop="handleEditMenu(data, node)">
+                        </el-button>
                         <el-button type="text" size="mini" @click.stop="append(data)">
                             添加
                         </el-button>
-                        <el-popconfirm class="delete" title="确定删除？" placement="top" @confirm="handleDelete(i, j)">
-                            <el-button type="text" slot="reference" style="color:red">删除</el-button>
+                        <el-popconfirm class="delete" title="确定删除？" placement="top" @confirm="handleDelete(data)">
+                            <el-button type="text" slot="reference" style="color:red" @click.stop>删除</el-button>
                         </el-popconfirm>
                     </span>
                 </span>
@@ -24,7 +27,7 @@
                     <el-input v-model="form.label" placeholder="请输入名称" clearable />
                 </el-form-item>
                 <el-form-item label="内容">
-                    <Upload url="/upload" v-model="form.urla" />
+                    <Upload url="/localUpload" v-model="form.urla" />
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="handleSubmit">保存</el-button>
@@ -33,7 +36,7 @@
         </div>
     </div>
 </template>
-  
+
 <script>
 import { ajax } from '@/api/ajax';
 import { blur } from 'tqr'
@@ -66,7 +69,8 @@ export default {
             initFomr: {},
             rules: {
                 label: blur
-            }
+            },
+            expandedKeys: []
         }
     },
     created() {
@@ -93,32 +97,53 @@ export default {
                 this.$global.loading = false
             })
         },
+        // 添加更根目录
         handleAdd() {
             this.form = { ...this.initFomr }
         },
-        handleBack() {
-            this.$router.back()
-        },
-        handleNodeClick(data, node) {
-            const { isLeaf } = node;
-            if (isLeaf) {
-                const { urls } = data
-                this.form = { ...data, urla: urls.split(',').map(i => ({ filePath: i })) }
-            }
-        },
+        // 子节点添加
         append(data) {
             const { id, level } = data;
             this.form = {
                 ...this.initFomr,
                 pid: id,
                 level: level + 1,
-
             }
         },
+        // 节点点击
+        handleNodeClick(data, node) {
+            this.expandedKeys = [data.eid];
+            const { isLeaf } = node;
+            if (isLeaf) {
+                const { urls } = data
+                this.form = { ...data, urla: urls ? urls.split(',').map(i => ({ filePath: i })) : [] }
+            }
+        },
+        // 编辑目录
+        handleEditMenu(data, node) {
+            this.expandedKeys = [data.eid];
+            const { urls } = data
+            this.form = { ...data, urla: urls.split(',').map(i => ({ filePath: i })) }
+        },
+        // 删除
+        handleDelete(data) {
+            const { id } = data;
+            this.$global.loading = true;
+            ajax({
+                url: `/directoryBooks/${id}`,
+                method: 'delete'
+            }).then(() => {
+                this.$notify.success('删除成功')
+                this.getMenu(this.form.bookId)
+            }).finally(() => {
+                this.$global.loading = false;
+            })
+        },
+        // 新增/更新
         handleSubmit() {
             this.$refs.form.validate((valid) => {
                 if (valid) {
-                    const { id, urla } = this.form
+                    const { bookId, id, urla } = this.form
                     const data = { ...this.form, urls: urla.map(({ filePath }) => filePath).join(',') };
                     this.$global.loading = true;
                     ajax({
@@ -128,6 +153,7 @@ export default {
                     })
                         .then((res) => {
                             this.$notify.success('成功')
+                            this.getMenu(bookId)
                         })
                         .finally(() => {
                             this.$global.loading = false;
@@ -137,7 +163,11 @@ export default {
                     return false;
                 }
             });
-        }
+        },
+        // 返回列表
+        handleBack() {
+            this.$router.back()
+        },
 
     }
 };
@@ -201,4 +231,3 @@ export default {
     }
 }
 </style>
-  

@@ -5,7 +5,7 @@
         <div class="base scroll">
           <el-form :model="form" ref="form" :rules="rules" label-width="140px" label-position="left">
             <el-form-item label="文档封面">
-              <Upload v-model="form.imageUrl" url="/upload" height="150px" />
+              <Upload v-model="form.imageUrl" url="/localUpload" height="150px" />
             </el-form-item>
             <FormProT :form="form" :list="list" :form-list="formList" />
             <el-form-item>

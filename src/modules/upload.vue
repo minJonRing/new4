@@ -9,9 +9,10 @@
 		</el-upload>
 	</div>
 </template>
-  
+
 <script>
 import { rulesT } from "tqr";
+import { mapGetters } from "vuex";
 export default {
 	name: "UploadProT",
 	props: {
@@ -75,6 +76,7 @@ export default {
 				this.$emit("change", data);
 			},
 		},
+		...mapGetters(['local'])
 	},
 	created() { },
 	methods: {
@@ -119,8 +121,8 @@ export default {
 			})
 				.then(({ data }) => {
 					const { url } = data;
-					console.log(url)
-					this.image = url
+					const _url = this.local ? `/library${url}` : url;
+					this.image = _url
 				})
 				.finally(() => {
 					this.$global.loading = false;
@@ -143,7 +145,7 @@ export default {
 	},
 };
 </script>
-  
+
 <style lang="scss" scoped>
 .e-upload {
 	display: flex;

@@ -2,7 +2,7 @@
   <div class="info">
     <el-form :model="form" ref="form" :rules="rules" label-width="120px">
       <el-form-item label="文档封面" prop="coverUrl">
-        <Upload v-model="form.coverUrl" url="/upload" width="300px" height="150px" />
+        <Upload v-model="form.coverUrl" url="/localUpload" width="300px" height="150px" />
       </el-form-item>
       <FormProT :form="form" :list="list" :form-list="formList" />
       <el-form-item label="图书列表">
@@ -27,9 +27,9 @@
           </el-table-column>
         </el-table>
         <div class="pages" style="padding: 12px 0;">
-          <el-pagination background :current-page="pages.currentPage" :page-size="pages.pageSize" :total="pages.pageTotal"
-            :page-sizes="[5, 10, 20, 30, 50]" layout="sizes, prev, pager, next, jumper" @size-change="handleSizeChange"
-            @current-change="handleCurrentChange" />
+          <el-pagination background :current-page="pages.currentPage" :page-size="pages.pageSize"
+            :total="pages.pageTotal" :page-sizes="[5, 10, 20, 30, 50]" layout="sizes, prev, pager, next, jumper"
+            @size-change="handleSizeChange" @current-change="handleCurrentChange" />
         </div>
       </el-form-item>
       <el-form-item>
@@ -81,7 +81,7 @@ export default {
         roleList: []
       },
       form: {
-        id: 0,
+        id: null,
         coverUrl: "",
         name: "",
         briefIntroduce: "",
@@ -137,11 +137,11 @@ export default {
         this.form = topicLibrary;
       })
     } else {
-      const { nickName } = this.userInfo
+      const { nickName } = this.userInfo;
       this.form.creator = nickName;
       this.init()
     }
-    const bookType = this.bookType;
+    console.log(this.form)
   },
   methods: {
     init() {
@@ -176,7 +176,6 @@ export default {
           },
         },
       ];
-      this.form = { ...this.form, ...this.initForm(this.formList) };
     },
     handleConfirm() {
       this.$refs.form.validate((valid) => {

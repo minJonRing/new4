@@ -14,7 +14,7 @@
                                 style="color:#ef9600" @click.stop="handleEditMenu(data, node)">
                             </el-button>
                             <el-button v-if="returnFile(data)" type="text" size="mini" icon="el-icon-folder-add"
-                                style="color:#67c23a" @click.stop="handleFile(data)">
+                                style="color:#67c23a" @click.stop="handleAddFile(data)">
                                 期刊目录/图书
                             </el-button>
                             <el-popconfirm class="delete" title="确定删除？" placement="top" @confirm="handleDelete(data)">
@@ -33,7 +33,7 @@
                     <el-input v-model="form.title" placeholder="请输入" clearable></el-input>
                 </el-form-item>
                 <el-form-item label="内容">
-                    <Upload url="/upload" v-model="form.urla" />
+                    <Upload url="/localUpload" v-model="form.urla" />
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="handleSubmit">保存</el-button>
@@ -45,14 +45,13 @@
         </div>
     </div>
 </template>
-  
+
 <script>
 import { ajax } from '@/api/ajax';
-import { change, blur } from 'tqr'
+import { change, blur, menuGenerate } from 'tqr'
 
 import Upload from '../upload.vue'
 import MenuShadow from './menu.vue'
-import { nextYear } from 'tqr-vue-element-pro';
 export default {
     name: "Menu",
     props: {
@@ -104,7 +103,7 @@ export default {
     created() {
         const { id } = this.book
         this.form.bookId = id;
-        this.initFomr = { ...this.form }
+        this.initFomr = JSON.parse(JSON.stringify(this.form));
         this.getFile(id)
     },
     mounted() {
@@ -121,9 +120,25 @@ export default {
                 }
             }).then(({ data }) => {
                 const { list } = data;
-                this.getMenu(id, list)
+                const file = this.filterFile(list)
+                this.getMenu(id, file)
             }).finally(() => {
                 this.$global.loading = false
+            })
+        },
+        filterFile(data) {
+            return data.map(el => {
+                const { id, title, children } = el
+                const obj = {
+                    ...el,
+                    eid: 'c' + id,
+                    label: title,
+                    children: []
+                }
+                if (el.children && !!el.children.length) {
+                    obj.children = this.filterFile(children)
+                }
+                return obj
             })
         },
         // 获取目录列表
@@ -157,14 +172,7 @@ export default {
                 if (children && children.length) {
                     obj.children = this.filterMenu(children, file)
                 } else {
-                    obj.children = file.filter(({ directoryId }) => directoryId == id).map((el) => {
-                        return {
-                            ...el,
-                            eid: 'c' + el.id,
-                            label: el.title,
-                            children: []
-                        }
-                    })
+                    obj.children = file.filter(({ directoryId }) => directoryId == id)
                 }
                 return obj;
             })
@@ -249,13 +257,22 @@ export default {
             }
         },
         // 添加文件
-        handleFile(data) {
-            const { id } = data;
+        handleAddFile(data) {
+            const { id, level, directoryId } = data;
             this.currentNode = data;
-            this.form = {
-                ...this.initFomr,
-                directoryId: id
-            };
+            let form = {
+                ...JSON.parse(JSON.stringify(this.initFomr)),
+                directoryId: id,
+            }
+            if (level) {
+                form = {
+                    ...form,
+                    directoryId,
+                    level: level + 1,
+                    pid: id
+                }
+            }
+            this.form = form;
             this.active = true;
         },
         addFile(data, add) {
@@ -372,4 +389,3 @@ export default {
     }
 }
 </style>
-  

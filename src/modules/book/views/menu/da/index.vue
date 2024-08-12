@@ -50,11 +50,12 @@
                 </el-form-item>
                 <el-form-item label="起止时间" prop="timea">
                     <el-date-picker v-model="form.timea" type="daterange" value-format="yyyy-MM-dd" format="yyyy-MM-dd"
-                        :picker-options="pickerOptions" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+                        :picker-options="pickerOptions" range-separator="至" start-placeholder="开始日期"
+                        end-placeholder="结束日期">
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item label="内容">
-                    <Upload url="/upload" v-model="form.urla" />
+                    <Upload url="/localUpload" v-model="form.urla" />
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="handleSubmit">保存</el-button>
@@ -66,7 +67,7 @@
         </div>
     </div>
 </template>
-  
+
 <script>
 import { ajax } from '@/api/ajax';
 import { change, blur } from 'tqr'
@@ -287,7 +288,7 @@ export default {
             const { id } = data;
             this.currentNode = data;
             this.form = {
-                ...this.initFomr,
+                ...JSON.parse(JSON.stringify(this.initFomr)),
                 directoryId: id
             };
             this.active = true;
@@ -321,7 +322,8 @@ export default {
                     const data = {
                         ...this.form,
                         time: timea.join(','),
-                        urls: urla.map(({ filePath }) => filePath).join(',')
+                        urls: urla.map(({ filePath }) => filePath).join(','),
+                        pages: urla.length
                     };
                     this.$global.loading = true;
                     ajax({
@@ -414,4 +416,3 @@ export default {
     }
 }
 </style>
-  

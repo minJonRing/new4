@@ -25,7 +25,6 @@ import {
   blurPhoneNotRequired,
   blurEmailNotRequired
 } from "tqr";
-import Upload from '@/modules/upload.vue'
 import { ajax } from "@/api/ajax";
 
 export default {
@@ -33,9 +32,6 @@ export default {
   mixins: [infoMixin],
   props: {
     read: rulesT.Boolean,
-  },
-  components: {
-    Upload
   },
   data() {
     return {

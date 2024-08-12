@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <Upload v-model="form.url" url="/upload" width="200px" height="200px" />
+    <Upload v-model="form.url" url="/localUpload" width="200px" height="200px" />
     <el-divider></el-divider>
     <el-button type="primary" @click="handleSave">保存设置</el-button>
 

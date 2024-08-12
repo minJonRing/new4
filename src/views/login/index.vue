@@ -3,7 +3,7 @@
     <el-form ref="form" :model="form" :rules="rules" class="login-form" autocomplete="on" label-position="left">
       <div class="title-container">
         <h2 class="title">{{ title }}</h2>
-        <h6 class="title-sub">用户登录</h6>
+        <h6 class="title-sub">管理端登录</h6>
       </div>
       <el-form-item prop="username">
         <el-input ref="username" v-model.trim="form.username" placeholder="请输入用户名" name="username" type="text"
@@ -26,15 +26,16 @@
         </el-input>
       </el-form-item>
       <el-form-item>
-        <el-button :loading="loading" type="primary" style="width: 100%" size="small" @click.native.prevent="handleLogin">
+        <el-button :loading="loading" type="primary" style="width: 100%" size="small"
+          @click.native.prevent="handleLogin">
           登录
         </el-button>
       </el-form-item>
       <el-form-item>
         <div class="username-help">
-          <router-link to="/register">
+          <!-- <router-link to="/register">
             <el-button type="text">还没有账号?马上注册!</el-button>
-          </router-link>
+          </router-link> -->
           <!-- <router-link to="/forget">
             <el-button type="text" style="color: #e6a23c">忘记密码</el-button>
           </router-link> -->
@@ -47,6 +48,9 @@
 <script>
 import { title } from '@/settings'
 import { blur } from "tqr";
+import { ajax } from '@/api/ajax';
+const CryptoJS = require("crypto-js");
+
 export default {
   name: "Login",
   data() {
@@ -82,6 +86,16 @@ export default {
   },
   created() {
     // window.addEventListener('storage', this.afterQRScan)
+    // ajax({
+    //   url: ' /api/waterFrontPage/yearDiversionConditionsInfoOther',
+    //   method: 'post',
+    //   data: {
+    //     appKey: 'zdhtdw',
+    //     appSecret: '3bhlw4Iv6Pfg',
+    //   }
+    // }).then((res) => {
+    //   console.log(res)
+    // })
   },
   mounted() {
     if (this.form.username === "") {
@@ -114,8 +128,12 @@ export default {
         if (valid) {
           this.loading = true;
           // 调取 登录接口  存储用户登录token
+          const data = {
+            ...this.form,
+            password: CryptoJS.MD5(this.form.password).toString()
+          }
           this.$store
-            .dispatch("user/login", this.form)
+            .dispatch("user/login", data)
             .then(() => {
               this.$router.push({
                 path: this.redirect || "/",
@@ -188,8 +206,9 @@ $light_gray: #000;
   background-color: $bg;
   overflow: hidden;
   height: 100vh;
-  background: #92d2ee url('../../assets/loginBg.jpg');
+  background: #92d2ee url('../../assets/loginBg.jpeg');
   background-size: cover;
+
 
   .login-form {
     float: right;
@@ -198,19 +217,21 @@ $light_gray: #000;
     max-width: 100%;
     padding: 160px 35px 0;
     overflow: hidden;
-    background-color: #fff;
+    background-color: rgba(255, 255, 255, .6);
     height: 100%;
     clear: both;
+    backdrop-filter: blur(6px);
 
     .title-container {
       position: relative;
 
       .title {
-        font-size: 26px;
+        font-size: 36px;
         color: $light_gray;
         margin: 0px auto 20px auto;
         text-align: center;
         font-weight: bold;
+        letter-spacing: 2px;
       }
 
       .title-sub {

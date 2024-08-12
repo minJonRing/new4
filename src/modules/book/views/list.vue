@@ -10,7 +10,7 @@
 import { mapGetters } from "vuex";
 import { rulesT } from "tqr";
 export default {
-  name: "List",
+  name: "BookList",
   props: {
     noBtns: rulesT.Array,
     otherBtns: rulesT.Array,

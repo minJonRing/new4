@@ -25,7 +25,7 @@ module.exports = {
    * In most cases please use '/' !!!
    * Detail: https://cli.vuejs.org/config/#publicpath
    */
-  publicPath: '/',
+  publicPath: './',
   outputDir: dir,
   assetsDir: `static/${dir}`,
   lintOnSave: process.env.NODE_ENV === 'development',
@@ -44,6 +44,9 @@ module.exports = {
         // pathRewrite: {
         //   '^/app': '',
         // },
+      },
+      api: {
+        target: `https://qtj.zjwater.com/zdys`, //修改后台接口地址
       },
     },
   },

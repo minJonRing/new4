@@ -47,6 +47,7 @@ const actions = {
     return new Promise(resolve => {
       // 获取生成的路由
       const accessedRoutes = [...generateRoute(roles), ...asyncRoutes]
+      console.log(accessedRoutes)
       commit('SET_ROUTES', accessedRoutes)
       resolve(accessedRoutes)
     })

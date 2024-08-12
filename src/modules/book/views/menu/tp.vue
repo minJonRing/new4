@@ -23,8 +23,8 @@
                     <el-date-picker v-model="form.photoTime" type="date" value-format="yyyy-MM-dd" placeholder="选择日期时间">
                     </el-date-picker>
                 </el-form-item>
-                <el-form-item label="内容">
-                    <Upload url="/upload" v-model="form.urla" />
+                <el-form-item label="内容" prop="urla">
+                    <Upload url="/localUpload" v-model="form.urla" />
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="handleSubmit">保存</el-button>
@@ -33,7 +33,7 @@
         </div>
     </div>
 </template>
-  
+
 <script>
 import { ajax } from '@/api/ajax';
 import { change, blur } from 'tqr'
@@ -61,13 +61,15 @@ export default {
                 photoTime: '',
                 place: '',
                 sort: '',
-                urla: []
+                urla: [],
+                urls: ""
             },
             initFomr: {
 
             },
             rules: {
-                label: blur
+                label: blur,
+                urla: change
             }
         }
     },
@@ -98,29 +100,18 @@ export default {
         handleAdd() {
             this.form = { ...this.initFomr }
         },
-        handleBack() {
-            this.$router.back()
-        },
+
         handleNodeClick(data, node) {
             const { isLeaf } = node;
             if (isLeaf) {
                 const { urls } = data
-                this.form = { ...data, urla: urls.split(',').map(i => ({ filePath: i })) }
-            }
-        },
-        append(data) {
-            const { id, level } = data;
-            this.form = {
-                ...this.initFomr,
-                pid: id,
-                level: level + 1,
-
+                this.form = { ...data, urla: urls ? urls.split(',').map(i => ({ filePath: i })) : [] }
             }
         },
         handleSubmit() {
             this.$refs.form.validate((valid) => {
                 if (valid) {
-                    const { id, urla } = this.form
+                    const { bookId, id, urla } = this.form
                     const data = {
                         ...this.form,
                         urls: urla.map(({ filePath }) => filePath).join(',')
@@ -133,6 +124,7 @@ export default {
                     })
                         .then((res) => {
                             this.$notify.success('成功')
+                            this.getMenu(bookId)
                         })
                         .finally(() => {
                             this.$global.loading = false;
@@ -142,7 +134,10 @@ export default {
                     return false;
                 }
             });
-        }
+        },
+        handleBack() {
+            this.$router.back()
+        },
 
     }
 };
@@ -206,4 +201,3 @@ export default {
     }
 }
 </style>
-  

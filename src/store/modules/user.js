@@ -8,7 +8,7 @@ const state = {
   name: '',
   roles: [],
   userInfo: {},
-
+  local: true
 }
 
 const mutations = {

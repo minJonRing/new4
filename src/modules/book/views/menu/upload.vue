@@ -8,13 +8,16 @@
                 <i class="el-icon el-icon-upload2" />
             </el-upload>
             <transition-group tag="div" class="container">
-                <div v-for="(i, j) in fileList" :key="i.filePath" class="item" :style="{ width, height }" draggable="true"
-                    @dragstart="handleDragStart($event, i)" @dragover.prevent="handleDragOver($event, i)"
-                    @dragenter="handleDragEnter($event, i)" @dragend="handleDragEnd($event, i)">
-                    <el-popconfirm v-if="!read" class="delete" title="确定删除？" placement="top" @confirm="handleDelete(i, j)">
+                <div v-for="(i, j) in fileList" :key="i.filePath" class="item" :style="{ width, height }"
+                    draggable="true" @dragstart="handleDragStart($event, i)"
+                    @dragover.prevent="handleDragOver($event, i)" @dragenter="handleDragEnter($event, i)"
+                    @dragend="handleDragEnd($event, i)">
+                    <el-popconfirm v-if="!read" class="delete" title="确定删除？" placement="top"
+                        @confirm="handleDelete(i, j)">
                         <el-button type="danger" slot="reference">删除</el-button>
                     </el-popconfirm>
-                    <el-image :src="i.filePath" fit="cover" :preview-src-list="fileList.map(({ filePath }) => filePath)">
+                    <el-image :src="i.filePath" fit="cover"
+                        :preview-src-list="fileList.map(({ filePath }) => filePath)">
                         <div slot="error" class="image-slot">
                             <a class="tip-text" :href="i.filePath" target="_blank">
                                 {{ `点击下载《${i.fileName || "为命名文件"}》` }}
@@ -37,10 +40,11 @@
         </template>
     </div>
 </template>
-  
+
 <script>
 import { rulesT } from "tqr";
 import { Notification } from "element-ui";
+import { mapGetters } from "vuex";
 export default {
     name: "UploadProT",
     props: {
@@ -103,6 +107,7 @@ export default {
                 this.$emit("change", data);
             },
         },
+        ...mapGetters(['local'])
     },
     created() { },
     methods: {
@@ -138,8 +143,8 @@ export default {
             })
                 .then(({ data }) => {
                     const { url } = data;
-                    this.fileList.push({ filePath: url, ...data });
-                    console.log(this.fileList)
+                    const _url = this.local ? `/library${url}` : url;
+                    this.fileList.push({ filePath: _url, ...data });
                 })
                 .finally(() => {
                     this.loading = false;
@@ -179,7 +184,7 @@ export default {
     },
 };
 </script>
-  
+
 <style lang="scss" scoped>
 .e-upload {
 

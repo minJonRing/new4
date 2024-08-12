@@ -13,7 +13,10 @@ export const roles = [
             },
             {
                 component: 'UserSee',
-                hidden: true
+                hidden: true,
+                meta: {
+                    title: '用户查看'
+                },
             }
         ]
     },
@@ -31,41 +34,59 @@ export const roles = [
             },
             {
                 component: 'TopicLibraryAdd',
-                hidden: true
+                hidden: true,
+                meta: {
+                    title: '专题库添加'
+                },
             },
             {
                 component: 'TopicLibraryEdit',
-                hidden: true
+                hidden: true,
+                meta: {
+                    title: '专题库编辑'
+                },
             },
             {
                 component: 'TopicLibrarySee',
-                hidden: true
+                hidden: true,
+                meta: {
+                    title: '专题库查看'
+                },
             }
         ]
     },
     {
         component: 'Book',
         meta: {
-            title: '内容管理', icon: 'education',
+            title: '图书管理', icon: 'education',
         },
         children: [
             {
                 component: 'BookList',
                 meta: {
-                    title: '内容管理'
+                    title: '图书管理'
                 },
             },
             {
                 component: 'BookAdd',
-                hidden: true
+                hidden: true,
+                meta: {
+                    title: '图书新增'
+                },
             },
             {
                 component: 'BookEdit',
-                hidden: true
+                hidden: true,
+                meta: {
+                    title: '图书编辑'
+                },
             },
             {
                 component: 'BookSee',
-                hidden: true
+                hidden: true,
+                meta: {
+                    title: '图书查看'
+                },
             }
         ]
     },
