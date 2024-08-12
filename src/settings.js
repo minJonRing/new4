@@ -1,9 +1,8 @@
-// const Logo = require('./assets/logo.png')
-
+const Logo = require('./assets/logo.png')
 module.exports = {
   // 标题
   title: '新四军研究',
-  logo: './assets/logo.png',
+  logo: Logo,
   /**
    * 显示设置按钮
    * @type {boolean} true | false

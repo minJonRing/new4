@@ -15,7 +15,7 @@
       </el-form-item>
       <el-form-item prop="password">
         <el-input :key="passwordType" ref="password" v-model.trim="form.password" :type="passwordType"
-          placeholder="Password" name="password" tabindex="2" autocomplete="on" clearable @keyup.native="checkCapslock"
+          placeholder="请输入密码" name="password" tabindex="2" autocomplete="on" clearable @keyup.native="checkCapslock"
           @blur="capsTooltip = false" @keyup.enter.native="handleLogin" size="small">
           <span class="svg-container" slot="prepend">
             <svg-icon icon-class="password" />
