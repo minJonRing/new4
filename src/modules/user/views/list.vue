@@ -63,11 +63,17 @@ export default {
         // { label: "当前积分", prop: "username" },
         { label: "邮箱", prop: "email" },
         { label: "手机号", prop: "phone" },
-        // { label: "状态", prop: "phone" },
+        {
+          label: "状态", prop: "isDeleted", formatter: (row) => {
+            return <el-tag type={row.isDeleted ? 'danger' : ''}>{row.isDeleted ? '禁用' : '正常'}</el-tag>
+          },
+          width: '100px'
+        },
         {
           label: "创建时间", formatter: (row) => {
             return row.createTime.split('T')[0]
-          }
+          },
+          width: "160px"
         },
       ];
     },
