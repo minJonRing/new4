@@ -20,7 +20,7 @@
                         :preview-src-list="fileList.map(({ filePath }) => filePath)">
                         <div slot="error" class="image-slot">
                             <a class="tip-text" :href="i.filePath" target="_blank">
-                                {{ `点击下载《${i.fileName || "为命名文件"}》` }}
+                                {{ `点击下载《${i.fileName || "未命名文件"}》` }}
                             </a>
                             <i class="el-icon-picture-outline"></i>
                         </div>
@@ -283,8 +283,8 @@ export default {
                         text-align: center;
                         font-size: 13px;
                         overflow: hidden;
-                        white-space: nowrap;
-                        text-overflow: ellipsis;
+                        // white-space: nowrap;
+                        // text-overflow: ellipsis;
                         line-height: 1;
                         color: #409eff;
                     }

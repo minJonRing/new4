@@ -418,8 +418,6 @@ export default {
         if (valid) {
           const { keyWords = '' } = this.form
           const data = { ...this.form, keyWords: keyWords.replace(/\,|\，/g, ',').split(',') };
-          console.log(data)
-          return
           this.submit(data);
         } else {
           this.$notify.warning("必填项未填写完整，请检查！");

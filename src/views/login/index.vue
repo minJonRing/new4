@@ -130,7 +130,7 @@ export default {
           // 调取 登录接口  存储用户登录token
           const data = {
             ...this.form,
-            // password: CryptoJS.MD5(this.form.password).toString()
+            password: CryptoJS.MD5(this.form.password).toString()
           }
           this.$store
             .dispatch("user/login", data)
