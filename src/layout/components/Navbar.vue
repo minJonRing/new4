@@ -54,10 +54,10 @@ import ErrorLog from "./Template/ErrorLog";
 import ScreenFull from "./Template/Screenfull";
 import SizeSelect from "./Template/SizeSelect";
 import Search from "./Template/HeaderSearch";
-import ModifyPassword from "./Template/ModifyPassword";
+import ModifyPassword from "./Template/ModifyPassword/index.vue";
 import headJpg from '@/assets/head.jpg'
 import { ajax } from '@/api/ajax';
-
+const CryptoJS = require("crypto-js");
 export default {
   components: {
     Breadcrumb,
@@ -95,15 +95,23 @@ export default {
       this.$router.push(`/login?redirect=${this.$route.fullPath}`);
     },
     handleChangePassword() {
-      this.$refs.ModifyPassword.handleSubmit().then((data) => {
+      this.$refs.ModifyPassword.handleSubmit((d) => {
+        const { oldPassword, password, checkPassword } = d;
+        const data = {
+          oldPassword: CryptoJS.MD5(oldPassword).toString(),
+          password: CryptoJS.MD5(password).toString(),
+          checkPassword: CryptoJS.MD5(checkPassword).toString(),
+        }
         this.$global.loading = true;
         ajax({
-          url: '/password',
-          method: 'put',
-          data
-        }).then(() => {
-          this.modify = false
-          this.$notify.success('修改成功')
+          url: '/api/user/changePass',
+          method: 'post',
+          data,
+        }).then(async () => {
+          this.$notify.success('密码修改成功!')
+          this.modify = false;
+          await this.$store.dispatch("user/logout");
+          this.$router.push(`/login`);
         }).finally(() => {
           this.$global.loading = false;
         })

@@ -4,7 +4,7 @@
       <el-tab-pane label="图书基本信息">
         <div class="base scroll">
           <el-form :model="form" ref="form" :rules="rules" label-width="140px" label-position="left">
-            <el-form-item label="文档封面">
+            <el-form-item label="文档封面" prop="imageUrl">
               <Upload v-model="form.imageUrl" url="/localUpload" height="150px" />
             </el-form-item>
             <FormProT :form="form" :list="list" :form-list="formList" />
@@ -95,6 +95,9 @@ export default {
       },
       formList: [],
       rules: {
+        imageUrl: change,
+        title: blur,
+        docType: change,
         // nickName: blurName,
         username: [{ required: true, message: '请输入', trigger: 'blur' }, , { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }],
         password: [{ required: true, message: '请输入', trigger: 'blur' }, , { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }],

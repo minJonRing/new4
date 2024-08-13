@@ -96,6 +96,8 @@ export default {
             // dragging
             ending: null,
             dragging: null,
+            // 
+            // baseURL: ""
         };
     },
     computed: {
@@ -109,7 +111,9 @@ export default {
         },
         ...mapGetters(['local'])
     },
-    created() { },
+    created() {
+        // this.baseURL = ''
+    },
     methods: {
         beforeAvatarUpload(file) {
             const isType =
