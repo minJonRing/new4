@@ -251,7 +251,7 @@ export default {
             border-radius: 6px;
             overflow: hidden;
             margin: 3px 6px 3px 0;
-            transition-duration: 300ms;
+            transition-duration: 100ms;
 
             .delete {
                 position: absolute;

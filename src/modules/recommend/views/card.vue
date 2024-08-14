@@ -13,7 +13,7 @@
         </div>
     </div>
 </template>
-    
+
 <script>
 export default {
     name: 'GoodsBrowse',
@@ -51,7 +51,7 @@ export default {
     }
 }
 </script>
-    
+
 <style lang="scss" scoped>
 $hoverEasing: cubic-bezier(0.23, 1, 0.32, 1);
 $returnEasing: cubic-bezier(0.445, 0.05, 0.55, 0.95);
@@ -159,7 +159,7 @@ $returnEasing: cubic-bezier(0.445, 0.05, 0.55, 0.95);
                     color: #000;
                     overflow: auto;
                     white-space: wrap;
-                    top: 30%;
+                    // top: 30%;
                     box-shadow: 0 -4rem 6rem rgba(0, 0, 0, .3);
                 }
             }

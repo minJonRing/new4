@@ -76,7 +76,7 @@ export default {
     created() {
         const { id } = this.book
         this.form.bookId = id;
-        this.initFomr = { ...this.form }
+        this.initFomr = JSON.parse(JSON.stringify(this.form))
         this.getMenu(id)
     },
     mounted() {
@@ -98,7 +98,7 @@ export default {
             })
         },
         handleAdd() {
-            this.form = { ...this.initFomr }
+            this.form = JSON.parse(JSON.stringify(this.initFomr))
         },
 
         handleNodeClick(data, node) {
