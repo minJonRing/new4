@@ -2,7 +2,7 @@
     <div class="e-upload">
         <template v-if="(fileList && fileList.length) || !read">
             <el-upload key="1" v-if="!read" v-loading="loading" :element-loading-text="progress + '%'"
-                class="e-avatar-uploader" action="#" :limit="limit" :show-file-list="false"
+                class="e-avatar-uploader" action="#" :limit="limit" :show-file-list="false" multiple
                 :before-upload="beforeAvatarUpload" :http-request="handleUploadLearnSignVoucherFileChange"
                 :attr-icon="'注:只能上传' + type.join()" :style="{ width: '100%', height: '80px' }">
                 <i class="el-icon el-icon-upload2" />
@@ -245,6 +245,8 @@ export default {
     .container {
         display: flex;
         flex-wrap: wrap;
+        height: calc(100vh - 360px);
+        overflow: auto;
 
         .item {
             position: relative;
