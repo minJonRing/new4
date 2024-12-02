@@ -4,6 +4,7 @@ const getters = {
   // 系统设置
   loading: state => state.app.loading,
   sidebar: state => state.app.sidebar,
+  guoqile: state => state.app.guoqile,
   size: state => state.app.size,
   device: state => state.app.device,
   visitedViews: state => state.tagsView.visitedViews,

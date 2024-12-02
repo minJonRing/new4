@@ -11,7 +11,7 @@ import { roles } from '@/router/localtion'
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
 // 不用登录能直接进入的页面
-const whiteList = ['/login', '/register', '/forget', '/auth-redirect', '/authorization'] // no redirect whitelist
+const whiteList = ['/login', '/register', '/forget', '/auth-redirect'] // no redirect whitelist
 
 // 路由守卫 进入每个页面都会执行
 router.beforeEach(async (to, from, next) => {
@@ -19,6 +19,16 @@ router.beforeEach(async (to, from, next) => {
   NProgress.start()
   // 设置浏览器标题
   document.title = getPageTitle(to.meta.title)
+  if (store.getters.guoqile) {
+    if (to.path === '/login') {
+      next()
+    } else {
+      // 回到登录页
+      next(`/login`)
+    }
+    NProgress.done()
+    return
+  }
 
   // 获取用户登录凭证token
   const hasToken = getToken()

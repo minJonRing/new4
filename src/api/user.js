@@ -2,7 +2,7 @@ import { ajax } from './ajax'
 
 export function login(data) {
   return ajax({
-    url: '/api/user/login',
+    url: '/login',
     method: 'post',
     data
   })

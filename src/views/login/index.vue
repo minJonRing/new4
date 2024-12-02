@@ -26,7 +26,7 @@
         </el-input>
       </el-form-item>
       <el-form-item>
-        <el-button :loading="loading" type="primary" style="width: 100%" size="small"
+        <el-button :loading="loading" type="primary" :disabled="guoqile" style="width: 100%" size="small"
           @click.native.prevent="handleLogin">
           登录
         </el-button>
@@ -49,6 +49,7 @@
 import { title } from '@/settings'
 import { blur } from "tqr";
 import { ajax } from '@/api/ajax';
+import { mapGetters } from 'vuex';
 const CryptoJS = require("crypto-js");
 
 export default {
@@ -83,6 +84,9 @@ export default {
       },
       immediate: true,
     },
+  },
+  computed: {
+    ...mapGetters(['guoqile'])
   },
   created() {
     // window.addEventListener('storage', this.afterQRScan)

@@ -12,9 +12,11 @@
         <Search v-if="menuSearch" id="header-search" class="right-menu-item" />
         <ScreenFull v-if="fullScreen" id="screenfull" class="right-menu-item hover-effect" />
         <SizeSelect v-if="resize" id="size-select" class="right-menu-item hover-effect" />
+        <div class="right-menu-item" style="font-size: 14px;">{{ userInfo.nickName }}</div>
       </template>
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
+
         <div class="avatar-wrapper">
           <img :src="headJpg" class="user-avatar" />
           <i class="el-icon-caret-bottom" />
@@ -23,9 +25,9 @@
           <router-link to="/">
             <el-dropdown-item divided>主页</el-dropdown-item>
           </router-link>
-          <router-link to="/profile/index">
+          <!-- <router-link to="/profile/index">
             <el-dropdown-item>我的信息</el-dropdown-item>
-          </router-link>
+          </router-link> -->
           <el-dropdown-item divided @click.native="modify = true">
             <div>修改密码</div>
           </el-dropdown-item>

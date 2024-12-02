@@ -1,4 +1,6 @@
 import Cookies from 'js-cookie'
+import dayjs from 'dayjs'
+
 const COMMON_ENUM = {
   SET_LOADING: 'SET_LOADING',
   SET_E_TYPE: 'SET_E_TYPE'
@@ -10,7 +12,8 @@ const state = {
   },
   device: 'desktop',
   size: Cookies.get('size') || 'medium',
-  loading: false
+  loading: false,
+  guoqile: dayjs('2025-1-31').valueOf() - dayjs().valueOf() > 0 ? false : true
 }
 
 const mutations = {
@@ -35,6 +38,9 @@ const mutations = {
     state.size = size
     Cookies.set('size', size)
   },
+  GUO_QI_LE: (state, bool) => {
+    state.guoqile = bool
+  },
   [COMMON_ENUM.SET_LOADING]: (state, data) => {
     state.loading = data
   }
@@ -55,6 +61,9 @@ const actions = {
   },
   setLoading({ commit }, data = true) {
     commit(COMMON_ENUM.SET_LOADING, data)
+  },
+  setGuoqile({ commit }, data) {
+    commit('GUO_QI_LE', data)
   }
 }
 

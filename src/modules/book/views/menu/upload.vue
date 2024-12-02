@@ -7,26 +7,34 @@
                 :attr-icon="'注:只能上传' + type.join()" :style="{ width: '100%', height: '80px' }">
                 <i class="el-icon el-icon-upload2" />
             </el-upload>
-            <transition-group tag="div" class="container">
-                <div v-for="(i, j) in fileList" :key="i.filePath" class="item" :style="{ width, height }"
-                    draggable="true" @dragstart="handleDragStart($event, i)"
-                    @dragover.prevent="handleDragOver($event, i)" @dragenter="handleDragEnter($event, i)"
-                    @dragend="handleDragEnd($event, i)">
-                    <el-popconfirm v-if="!read" class="delete" title="确定删除？" placement="top"
-                        @confirm="handleDelete(i, j)">
-                        <el-button type="danger" slot="reference">删除</el-button>
-                    </el-popconfirm>
-                    <el-image :src="i.filePath" fit="cover"
-                        :preview-src-list="fileList.map(({ filePath }) => filePath)">
-                        <div slot="error" class="image-slot">
-                            <a class="tip-text" :href="i.filePath" target="_blank">
-                                {{ `点击下载《${i.fileName || "未命名文件"}》` }}
-                            </a>
-                            <i class="el-icon-picture-outline"></i>
-                        </div>
-                    </el-image>
-                </div>
-            </transition-group>
+            <el-checkbox-group v-model="checkList">
+                <transition-group tag="div" class="container">
+                    <div v-for="(i, j) in fileList" :key="i.filePath" class="item" :style="{ width, height }"
+                        draggable="true" @dragstart="handleDragStart($event, i)"
+                        @dragover.prevent="handleDragOver($event, i)" @dragenter="handleDragEnter($event, i)"
+                        @dragend="handleDragEnd($event, i)">
+                        <el-checkbox class="radio" :label="j"></el-checkbox>
+                        <el-popconfirm v-if="!read" class="delete" title="确定删除？" placement="top"
+                            @confirm="handleDelete(i, j)"
+                            style="background-color: rgba(255,255,255,.5);line-height: 1;">
+                            <el-button type="text" slot="reference" style="color:red;padding: 3px 6px;">删除</el-button>
+                        </el-popconfirm>
+                        <el-image :src="i.filePath" fit="cover"
+                            :preview-src-list="fileList.map(({ filePath }) => filePath)">
+                            <div slot="error" class="image-slot">
+                                <a class="tip-text" :href="i.filePath" target="_blank">
+                                    {{ `点击下载《${i.fileName || "未命名文件"}》` }}
+                                </a>
+                                <i class="el-icon-picture-outline"></i>
+                            </div>
+                        </el-image>
+                    </div>
+                </transition-group>
+            </el-checkbox-group>
+            <el-popconfirm v-if="!read" class="delete" title="确定删除？" placement="top" @confirm="handleDeleteAll"
+                style="background-color: rgba(255,255,255,.5);line-height: 1;">
+                <el-button slot="reference" type="danger">删除勾选图片</el-button>
+            </el-popconfirm>
         </template>
         <template v-else>
             <div class="item" :style="{ width, height }">
@@ -78,11 +86,11 @@ export default {
         // 上传模块的宽高 ，显示图片的宽高
         width: {
             type: String,
-            default: "140px",
+            default: "60px",
         },
         height: {
             type: String,
-            default: "210px",
+            default: "80px",
         },
     },
     model: {
@@ -98,6 +106,11 @@ export default {
             dragging: null,
             // 
             // baseURL: ""
+            uploadFiles: {},
+            uploadIndex: 0,
+            uploadCount: 0,
+            // 
+            checkList: []
         };
     },
     computed: {
@@ -135,7 +148,9 @@ export default {
         handleUploadLearnSignVoucherFileChange(files) {
             this.loading = true;
             const { file } = files;
-            let formData = new FormData();
+            const index = this.uploadIndex;
+            this.uploadIndex += 1;
+            const formData = new FormData();
             formData.append("file", file);
             this.$AJAX({
                 url: this.url,
@@ -148,14 +163,35 @@ export default {
                 .then(({ data }) => {
                     const { url } = data;
                     const _url = this.local ? `/library${url}` : url;
-                    this.fileList.push({ filePath: _url, ...data });
+                    this.uploadFiles[index] = { filePath: _url, ...data }
+                    this.uploadCount += 1;
+                    if (this.uploadIndex == this.uploadCount) {
+                        const fileList = structuredClone(this.fileList)
+                        const list = Object.values(this.uploadFiles)
+                        fileList.push(...list);
+                        this.fileList = fileList;
+                        this.uploadFiles = {};
+                        this.uploadIndex = 0;
+                        this.uploadCount = 0;
+                        this.loading = false;
+                    }
+
                 })
-                .finally(() => {
+                .catch(() => {
                     this.loading = false;
                 });
         },
         handleDelete(item, i) {
             this.fileList.splice(i, 1);
+        },
+        handleDeleteAll() {
+            if (!this.checkList.length) {
+                this.$notify.warning('请选择要删除的图片')
+                return
+            }
+            const fileList = structuredClone(this.fileList)
+            this.fileList = fileList.filter((i, j) => !this.checkList.includes(j))
+            this.checkList = []
         },
         // 拖拽
         handleDragStart(e, item) {
@@ -245,7 +281,7 @@ export default {
     .container {
         display: flex;
         flex-wrap: wrap;
-        height: calc(100vh - 360px);
+        max-height: calc(100vh - 360px);
         overflow: auto;
 
         .item {
@@ -254,6 +290,14 @@ export default {
             overflow: hidden;
             margin: 3px 6px 3px 0;
             transition-duration: 100ms;
+
+            .radio {
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: 1;
+                line-height: 1;
+            }
 
             .delete {
                 position: absolute;

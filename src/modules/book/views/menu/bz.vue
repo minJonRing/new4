@@ -161,6 +161,8 @@ export default {
 
     .tree {
         width: 240px;
+        flex-shrink: 0;
+        flex-grow: 0;
         border-right: 1px #d0d0d0 solid;
 
         .d {

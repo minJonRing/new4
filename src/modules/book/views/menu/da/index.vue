@@ -34,7 +34,7 @@
         <div class="images">
             <el-form v-if="active" :model="form" ref="form" :rules="rules" label-width="120px" size="small">
                 <el-form-item label="档案名称" prop="title">
-                    <el-input v-model="form.title" placeholder="请输入" clearable></el-input>
+                    <el-input type="textarea" rows="3" v-model="form.title" placeholder="请输入" clearable></el-input>
                 </el-form-item>
                 <el-form-item label="档案编号" prop="archiveNumber">
                     <el-input v-model="form.archiveNumber" placeholder="请输入" clearable></el-input>
@@ -360,6 +360,8 @@ export default {
 
     .tree {
         width: 360px;
+        flex-shrink: 0;
+        flex-grow: 0;
         border-right: 1px #d0d0d0 solid;
 
         .d {

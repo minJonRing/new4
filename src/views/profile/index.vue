@@ -2,10 +2,10 @@
   <div class="app-container">
     <div v-if="user">
       <el-row :gutter="20">
-        <el-col :span="6" :xs="24">
+        <el-col :span="24" :xs="24">
           <user-card :user="userInfo" />
         </el-col>
-        <el-col :span="18" :xs="24">
+        <!-- <el-col :span="18" :xs="24">
           <el-card>
             <el-tabs v-model="activeTab">
               <el-tab-pane label="基本信息" name="baseInfo">
@@ -16,7 +16,7 @@
               </el-tab-pane>
             </el-tabs>
           </el-card>
-        </el-col>
+        </el-col> -->
       </el-row>
     </div>
   </div>

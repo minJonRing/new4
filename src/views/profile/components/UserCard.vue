@@ -1,32 +1,44 @@
 <template>
   <el-card style="margin-bottom: 20px">
-    <div slot="header" class="clearfix">
-      <span>关于我</span>
-    </div>
-
     <div class="user-profile">
       <div class="box-center">
-        <el-image class="avatar" :src="user.avatar" fit="fill" :lazy="true" />
+        <el-image class="avatar" :src="ImageHead" fit="fill" :lazy="true" />
         <div class="user-name text-center">{{ user.nickName }}</div>
       </div>
     </div>
 
     <div class="user-bio">
       <div class="user-education user-bio-section">
-        <div class="user-bio-section-header">
-          <svg-icon icon-class="education" /><span>教育</span>
-        </div>
-        <!-- <div class="user-bio-section-body">
-          <div class="text-muted">
-            科技大学计算机科学系
-          </div>
-        </div> -->
+        <el-descriptions class="margin-top" :column="3" :size="size" border>
+          <el-descriptions-item>
+            <template slot="label">
+              <i class="el-icon-user"></i>
+              用户名
+            </template>
+            {{ user.username }}
+          </el-descriptions-item>
+          <el-descriptions-item>
+            <template slot="label">
+              <i class="el-icon-mobile-phone"></i>
+              手机号
+            </template>
+            {{ user.phone || '--' }}
+          </el-descriptions-item>
+          <el-descriptions-item>
+            <template slot="label">
+              <i class="el-icon-location-outline"></i>
+              邮箱
+            </template>
+            {{ user.email || '--' }}
+          </el-descriptions-item>
+        </el-descriptions>
       </div>
     </div>
   </el-card>
 </template>
 
 <script>
+import ImageHead from '@/assets/head.jpg'
 export default {
   props: {
     user: {
@@ -41,6 +53,11 @@ export default {
       },
     },
   },
+  data() {
+    return {
+      ImageHead
+    }
+  }
 };
 </script>
 

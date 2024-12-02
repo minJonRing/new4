@@ -10,7 +10,7 @@
         <div class="images">
             <el-form :model="form" ref="form" :rules="rules" label-width="120px" size="small">
                 <el-form-item label="名称" prop="label">
-                    <el-input v-model="form.label" placeholder="请输入" clearable></el-input>
+                    <el-input type="textarea" rows="3" v-model="form.label" placeholder="请输入" clearable></el-input>
                 </el-form-item>
                 <el-form-item label="拍摄者" prop="generateName">
                     <el-input v-model="form.generateName" placeholder="请输入" clearable></el-input>
@@ -150,6 +150,8 @@ export default {
 
     .tree {
         width: 240px;
+        flex-shrink: 0;
+        flex-grow: 0;
         border-right: 1px #d0d0d0 solid;
 
         .d {

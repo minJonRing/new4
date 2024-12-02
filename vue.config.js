@@ -39,7 +39,7 @@ module.exports = {
     },
     proxy: {
       library: {
-        target: `http://1.116.45.32:9966`, //修改后台接口地址
+        target: `http://172.38.26.235:9966`, //修改后台接口地址
         // changeOrigin: true,
         // pathRewrite: {
         //   '^/app': '',
@@ -47,6 +47,7 @@ module.exports = {
       },
       api: {
         target: `https://qtj.zjwater.com/zdys`, //修改后台接口地址
+        // target: `http://172.38.26.235:9966`, //修改后台接口地址172.38.26.235
       },
     },
   },

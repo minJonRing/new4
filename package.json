@@ -21,6 +21,7 @@
     "axios": "0.18.1",
     "core-js": "^3.26.1",
     "crypto-js": "^4.2.0",
+    "dayjs": "^1.11.13",
     "element-ui": "^2.15.13",
     "file-saver": "2.0.1",
     "fuse.js": "3.4.4",
